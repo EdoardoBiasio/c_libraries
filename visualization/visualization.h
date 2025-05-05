@@ -21,10 +21,7 @@ int frame_create(const char* name, int width, int height, void (*draw)(Display*,
 
 #elif defined(_WIN32) || defined(_WIN64) || defined(CYGWIN)
 
-
 #else
-
-typedef struct frame_s {} frame_t;
 
 #endif
 

@@ -378,6 +378,53 @@ int heap_is_empty(heap_t* heap);
 
 int array_heap_sort(array_t* array);
 
+typedef struct fibonacci_heap_node_s {
+    struct fibonacci_heap_node_s *child, *left, *right, *parent;
+    int degree, marked;
+    // node data
+} fibonacci_heap_node_t;
+
+typedef struct fibonacci_heap_s {
+    size_t type_size;
+    fibonacci_heap_node_t *root, *tree_list;
+    int list_size, size; 
+    int (*cmp)(void*, void*);
+} fibonacci_heap_t;
+
+int fibonacci_heap_init(fibonacci_heap_t* h, size_t type_size, int (*cmp)(void*, void*), int heap_type);
+int fibonacci_heap_close(fibonacci_heap_t* h);
+fibonacci_heap_node_t* fibonacci_heap_insert(fibonacci_heap_t* h, void* el, int heap_type);
+int fibonacci_heap_pop_root(fibonacci_heap_t* h, void* out, int heap_type);
+int fibonacci_heap_peek_root(fibonacci_heap_t* h, void* out);
+void* fibonacci_heap_peek_root_ref(fibonacci_heap_t* h);
+int fibonacci_heap_peek_root_node(fibonacci_heap_t* h, fibonacci_heap_t* out);
+fibonacci_heap_node_t* fibonacci_heap_peek_root_node_ref(fibonacci_heap_t* h);
+// lhs <- lhs u rhs
+void fibonacci_heap_union(fibonacci_heap_t* lhs, fibonacci_heap_t* rhs, int heap_type);
+void fibonacci_heap_update_value(fibonacci_heap_t* h, fibonacci_heap_node_t* node, void* newval, int heap_type);
+
+#define fibonacci_max_heap_init(h, type, cmp) fibonacci_heap_init(h, type, cmp, max_heap_type)
+#define fibonacci_max_heap_close(h) fibonacci_heap_close(h)
+#define fibonacci_max_heap_insert(h, el) fibonacci_heap_insert(h, el, max_heap_type)
+#define fibonacci_max_heap_pop_max(h, out) fibonacci_heap_pop_root(h, out, max_heap_type)
+#define fibonacci_max_heap_peek_max(h, out) fibonacci_heap_peek_root(h, out)
+#define fibonacci_max_heap_peek_max_ref(h) fibonacci_heap_peek_root_ref(h)
+#define fibonacci_max_heap_peek_max_node(h, out) fibonacci_heap_peek_root_node(h, out)
+#define fibonacci_max_heap_peek_max_node_ref(h) fibonacci_heap_peek_root_node_ref(h)
+#define fibonacci_max_heap_union(lhs, rhs) fibonacci_heap_union(lhs, rhs, max_heap_type)
+#define fibonacci_max_heap_update_value(h, node, newval) fibonacci_heap_init(h, node, newval, max_heap_type)
+
+#define fibonacci_min_heap_init(h, type, cmp) fibonacci_heap_init(h, type, cmp, min_heap_type)
+#define fibonacci_min_heap_close(h) fibonacci_heap_close(h)
+#define fibonacci_min_heap_insert(h, el) fibonacci_heap_insert(h, el, min_heap_type)
+#define fibonacci_min_heap_pop_min(h, out) fibonacci_heap_pop_root(h, out, min_heap_type)
+#define fibonacci_min_heap_peek_min(h, out) fibonacci_heap_peek_root(h, out)
+#define fibonacci_min_heap_peek_min_ref(h) fibonacci_heap_peek_root_ref(h)
+#define fibonacci_min_heap_peek_min_node(h, out) fibonacci_heap_peek_root_node(h, out)
+#define fibonacci_min_heap_peek_min_node_ref(h) fibonacci_heap_peek_root_node_ref(h)
+#define fibonacci_min_heap_union(lhs, rhs) fibonacci_heap_union(lhs, rhs, min_heap_type)
+#define fibonacci_min_heap_update_value(h, node, newval) fibonacci_heap_init(h, node, newval, min_heap_type)
+
 #define graph_directed (1 << 0)
 #define graph_connected (1 << 1)
 #define graph_completely_connected (1 << 2)
@@ -463,3 +510,4 @@ void lgraph_adjacency_lists_print(lgraph_t* g, void (*print)(void*));
 #include "macros.h"
 
 #endif /* CLIB_H */
+

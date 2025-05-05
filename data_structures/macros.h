@@ -1249,6 +1249,121 @@ heap_type_definition(char, char)
 heap_type_definition(float, f32)
 heap_type_definition(double, f64)
 
+
+
+#define fibonacci_heap_type_definition(type, name)			\
+    int fibonacci_max_heap_##name##_init(fibonacci_heap_t* heap);	\
+    int fibonacci_max_heap_##name##_close(fibonacci_heap_t* heap);	\
+    int fibonacci_max_heap_##name##_insert(fibonacci_heap_t* heap, type data); \
+    type fibonacci_max_heap_##name##_pop_max(fibonacci_heap_t* heap);	\
+    type fibonacci_max_heap_##name##_peek_max(fibonacci_heap_t* heap);	\
+    type* fibonacci_max_heap_##name##_peek_max_ref(fibonacci_heap_t* heap); \
+    fibonacci_heap_node_t fibonacci_max_heap_##name##_peek_max_node(fibonacci_heap_t* heap); \
+    fibonacci_heap_node_t* fibonacci_max_heap_##name##_peek_max_node_ref(fibonacci_heap_t* heap); \
+    void fibonacci_max_heap_##name##_union(fibonacci_heap_t* lhs, fibonacci_heap_t* rhs); \
+    type* fibonacci_max_heap_##name##_update_value(fibonacci_heap_t* heap, fibonacci_heap_node_t* node, type val); \
+    int fibonacci_min_heap_##name##_init(fibonacci_heap_t* heap);		\
+    int fibonacci_min_heap_##name##_close(fibonacci_heap_t* heap);				\
+    int fibonacci_min_heap_##name##_insert(fibonacci_heap_t* heap, type data);			\
+    type fibonacci_min_heap_##name##_pop_min(fibonacci_heap_t* heap);				\
+    type fibonacci_min_heap_##name##_peek_min(fibonacci_heap_t* heap);				\
+    type* fibonacci_min_heap_##name##_peek_min_ref(fibonacci_heap_t* heap);	\
+    fibonacci_heap_node_t fibonacci_min_heap_##name##_peek_main_node(fibonacci_heap_t* heap); \
+    fibonacci_heap_node_t* fibonacci_min_heap_##name##_peek_min_node_ref(fibonacci_heap_t* heap); \
+    void fibonacci_min_heap_##name##_union(fibonacci_heap_t* lhs, fibonacci_heap_t* rhs); \
+    type* fibonacci_min_heap_##name##_update_value(fibonacci_heap_t* heap, fibonacci_heap_node_t* node, type val);
+    
+#define fibonacci_heap_type_implementation(type, name)				\
+    int fibonacci_max_heap_##name##_init(fibonacci_heap_t* heap, size_t height) {	\
+	return max_heap_init(heap, sizeof(type), cmp_##name);		\
+    }									\
+    int fibonacci_max_heap_##name##_close(fibonacci_heap_t* heap) {		\
+	return fibonacci_max_heap_close(heap);				\
+    }									\
+    int fibonacci_max_heap_##name##_insert(fibonacci_heap_t* heap, type data) {	\
+        type __n = data;						\
+	return fibonacci_max_heap_insert(heap, &__n);			\
+    }									\
+    type fibonacci_max_heap_##name##_pop_max(fibonacci_heap_t* heap) {		\
+	type __n = 0;							\
+	fibonacci_max_heap_pop_max(heap, &__n);				\
+	return __n;							\
+    }									\
+    type fibonacci_max_heap_##name##_peek_max(fibonacci_heap_t* heap) {		\
+	type __n = 0;							\
+	fibonacci_max_heap_peek_max(heap, &__n);			\
+	return __n;							\
+    }									\
+    type* fibonacci_max_heap_##name##_peek_max_ref(fibonacci_heap_t* heap) {	\
+	 return fibonacci_max_heap_peek_max_ref(heap);			\
+    }									\
+    fibonacci_heap_node_t fibonacci_max_heap_##name##_peek_max_node(fibonacci_heap_t* heap) { \
+	fibonacci_heap_node_t __n = 0;					\
+	fibonacci_max_heap_peek_max_node(heap, &__n);			\
+	return __n;							\
+    }									\
+    fibonacci_heap_node_t* fibonacci_max_heap_##name##_peek_max_node_ref(fibonacci_heap_t* heap) { \
+	return fibonacci_max_heap_peek_max_node_ref(heap);		\
+    }									\
+    void fibonacci_max_heap_##name##_union(fibonacci_heap_t* lhs, fibonacci_heap_t* rhs) { \
+	fibonacci_max_heap_union(lhs, rhs);				\
+    }									\
+    void fibonacci_max_heap_##name##_update_value(fibonacci_heap_t* h, fibonacci_heap_node_t* node, type newval) { \
+	type __n = newval;						\
+	return fibonacci_max_heap_update_value(heap, node, &__n);	\
+    }									\
+    int fibonacci_min_heap_##name##_init(fibonacci_heap_t* heap, size_t height) {	\
+	return min_heap_init(heap, sizeof(type), cmp_##name);		\
+    }									\
+    int fibonacci_min_heap_##name##_close(fibonacci_heap_t* heap) {		\
+	return fibonacci_min_heap_close(heap);				\
+    }									\
+    int fibonacci_min_heap_##name##_insert(fibonacci_heap_t* heap, type data) {	\
+        type __n = data;						\
+	return fibonacci_min_heap_insert(heap, &__n);			\
+    }									\
+    type fibonacci_min_heap_##name##_pop_min(fibonacci_heap_t* heap) {		\
+	type __n = 0;							\
+	fibonacci_min_heap_pop_min(heap, &__n);				\
+	return __n;							\
+    }									\
+    type fibonacci_min_heap_##name##_peek_min(fibonacci_heap_t* heap) {		\
+	type __n = 0;							\
+	fibonacci_min_heap_peek_min(heap, &__n);			\
+	return __n;							\
+    }									\
+    type* fibonacci_min_heap_##name##_peek_min_ref(fibonacci_heap_t* heap) {	\
+	 return fibonacci_min_heap_peek_min_ref(heap);			\
+    }									\
+    fibonacci_heap_node_t fibonacci_min_heap_##name##_peek_min_node(fibonacci_heap_t* heap) { \
+	fibonacci_heap_node_t __n = 0;					\
+	fibonacci_min_heap_peek_min_node(heap, &__n);			\
+	return __n;							\
+    }									\
+    fibonacci_heap_node_t* fibonacci_min_heap_##name##_peek_min_node_ref(fibonacci_heap_t* heap) { \
+	return fibonacci_min_heap_peek_min_node_ref(heap);		\
+    }									\
+    void fibonacci_min_heap_##name##_union(fibonacci_heap_t* lhs, fibonacci_heap_t* rhs) { \
+	fibonacci_min_heap_union(lhs, rhs);				\
+    }									\
+    void fibonacci_min_heap_##name##_update_value(fibonacci_heap_t* h, fibonacci_heap_node_t* node, type newval) { \
+	type __n = newval;						\
+	return fibonacci_min_heap_update_value(heap, node, &__n);	\
+    }
+
+fibonacci_heap_type_definition(char, i8)
+fibonacci_heap_type_definition(unsigned char, u8)
+fibonacci_heap_type_definition(short, i16)
+fibonacci_heap_type_definition(unsigned short, u16)
+fibonacci_heap_type_definition(int, i32)
+fibonacci_heap_type_definition(unsigned int, u32)
+fibonacci_heap_type_definition(long, i64)
+fibonacci_heap_type_definition(unsigned long, u64)
+fibonacci_heap_type_definition(char, char)
+fibonacci_heap_type_definition(float, f32)
+fibonacci_heap_type_definition(double, f64)
+
+
 #define mgraph_type_definition(type, name)				\
     type* mgraph_##name##_vertex_data(mgraph_t* gptr, int i);		\
     int mgraph_##name##_init(mgraph_t* g, int flags);			\

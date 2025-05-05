@@ -93,4 +93,6 @@ int sparse_matrix_csc_create_from_coo(sparse_matrix_csc_t* new_matrix, sparse_ma
 void sparse_matrix_csc_print(sparse_matrix_csc_t* matrix);
 int sparse_matrix_csc_close(sparse_matrix_csc_t* matrix);
 f64 sparse_matrix_csc_condition(sparse_matrix_csc_t* A);
+
+
 #endif

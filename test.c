@@ -1,9 +1,12 @@
 #include "numerical/numerical.h"
 #include "visualization/visualization.h"
+#include "memory/memory.h"
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
+
 
 f64 quad(f64 x) {
     return 10 * tan(x)+ 50;
@@ -33,8 +36,9 @@ int main(int argc, char** argv) {
     list_node_t *el;
     singular_value_tuple_t* tt;
     dense_matrix_t S, U, V;
-    plot_2D_t plot;
+    plot_2D_t plot, p2;
     f64 zero;
+    stack_allocator_t sa;
     plot_2D_create(&plot, 500, 400);
     plot_2D_set_x_axis(&plot, 0, 10, 0.01, 0);
     plot_2D_set_y_axis(&plot, 0, 100, 1, 0);
@@ -49,7 +53,20 @@ int main(int argc, char** argv) {
     function_zeros_chords_method_residue(logarithm, 0.001, 10, 4.4, 100000000, 0.00001, &zero, NULL);
     printf("(%f, %f)\n", zero, logarithm(zero));
     plot_2D_add_point(&plot, zero, logarithm(zero), 0xFF0000);
-    plot_2D_display(&plot);    
+    plot_2D_display(&plot);
+
+    plot_2D_create(&p2, 500, 400);
+    plot_2D_set_x_axis(&p2, 0, 10, 0.01, 0);
+    plot_2D_set_y_axis(&p2, 0, 100, 1, 0);
+    plot_2D_set_x_axis_label(&p2, "x");
+    plot_2D_set_y_axis_label(&p2, "y");
+    plot_2D_show_x_axis_limits(&p2);
+    plot_2D_show_y_axis_limits(&p2);
+    
+    plot_2D_add_function(&p2, quad, 0);
+
+    plot_2D_add_function_legend(&p2, "tan(x)");
+    plot_2D_display(&p2);
     A.n = 4;
     b.n = 4;
     b.data = calloc(sizeof(f64), 4);
@@ -97,6 +114,10 @@ int main(int argc, char** argv) {
     sparse_matrix_coo_close(&smcoo);
     sparse_matrix_csc_print(&smcsc);
     sparse_matrix_csc_close(&smcsc);
+
+    stack_allocator_create(&sa, 100);
+    stack_allocator_alloc_align(&sa, 20, 4);
+    stack_allocator_print(&sa);
 
     return 0;
 }
